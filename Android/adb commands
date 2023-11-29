@@ -1,0 +1,1 @@
+adm shell am start -n <package_name>/.<activity_name>
