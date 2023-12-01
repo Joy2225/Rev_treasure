@@ -126,3 +126,138 @@ This loop iterates over all declarations in the model (`m.decls()`), printing th
 
 In summary, this code sets up a system of real variables and constraints using the Z3 library, checks if there exists an assignment of values to the variables that satisfies the constraints, and then prints the values of the variables in a satisfying assignment if one is found.
 
+# <u>Machine Arithmetic</u>
+
+Modern CPUs and main-stream programming languages use arithmetic over **fixed-size bit-vectors**. Machine arithmetic is available in Z3Py as **Bit-Vectors**.
+
+```python
+from z3 import *
+
+x = BitVec('x', 16) #Bit vector variable "x" of length 16 bit
+y = BitVec('y', 16)
+
+e = BitVecVal(10, 16) #Bit vector with value 10 of length 16bits
+a = BitVecVal(-1, 16)
+b = BitVecVal(65535, 16)
+print(simplify(a == b)) #This is True!
+a = BitVecVal(-1, 32)
+b = BitVecVal(65535, 32)
+print(simplify(a == b)) #This is False
+```
+
+Output:
+```
+True
+False
+```
+
+In 2's complement of `16 bit` -1, it gets converted to `65535` itself. Thats why z3 considers -1 and 65535 as equal in 16 bits, but in 32 bits, the 2's complement of -1 is (2<sup>31</sup> - 1). Hence they are not equal.
+
+# <u>Signed/Unsigned Numbers</u>
+
+Z3 provides special signed versions of arithmetical operations where it makes a difference whether the **bit-vector is treated as signed or unsigned**. In Z3Py, the operators **<, <=, >, >=, /, % and >>** correspond to the **signed** versions. The corresponding **unsigned** operators are **ULT(Unsigned lesser than), ULE(Unsigned lesser equal to), UGT(Unsigned greater than), UGE(Unsigned greater equal to), UDiv(Unsigned Division), URem(Unsigned Remainder), LShL(Logical Shift Left) and LShR(Logical shift right),.**
+
+```python
+from z3 import *
+
+# Create to bit-vectors of size 32
+x, y = BitVecs('x y', 32)
+solve(x + y == 2, x > 0, y > 0)
+
+# Bit-wise operators
+# & bit-wise and
+# | bit-wise or
+# ~ bit-wise not
+solve(x & y == ~y)
+solve(x < 0)
+
+# using unsigned version of < 
+solve(ULT(x, 0))
+```
+
+Output:
+```
+[y = 1, x = 1]
+[x = 0, y = 4294967295]
+[x = 4294967295]
+no solution
+```
+
+# <u>Functions</u>
+
+**Interpreted functions** such as arithmetic where the **function +** has a **fixed standard interpretation** (it adds two numbers). **Uninterpreted functions** and constants are **maximally flexible**; they allow **any interpretation** that is **consistent** with the **constraints** over the function or constant.
+
+Example: f applied twice to x results in x again, but f applied once to x is different from x.
+```python
+from z3 import *
+x = Int('x')
+y = Int('y')
+f = Function('f', IntSort(), IntSort())
+
+s = Solver()
+s.add(f(f(x)) == x, f(x) == y, x != y)
+s.check()
+m = s.model()
+
+print("f(f(x)) =", m.evaluate(f(f(x))))
+print("f(x) =", m.evaluate(f(x)))
+print(m.evaluate(f(2)))
+
+s.add(f(x) == 4) #Find the value that generates 4 as response
+s.check()
+print(s.model())
+```
+
+Output
+```
+f(f(x)) = 0
+f(x) = 1
+1
+[x = 2, y = 4, f = [2 -> 4, else -> 2]]
+```
+
+In Z3, the `Function` function is used to declare a function symbol. Its prototype is as follows:
+```python
+Function(name, *domain, range)
+```
+
+- `name`: A string that represents the name of the function symbol.
+- `*domain`: A variable number of arguments representing the sorts (data types) of the function's domain (input types). These can be one or more sorts.
+- `range`: The sort (data type) representing the function's codomain (output type).
+
+In Z3, `IntSort()` is a function that returns the sort (data type) representing integers. In Z3, sorts are used to define the types of variables and functions.
+
+Here's a breakdown:
+
+- `IntSort()` is a function call that returns the integer sort in Z3.
+- The `IntSort()` function represents the sort (data type) of integers.
+- In Z3, a "sort" refers to a particular type or domain of values, and `IntSort()` specifically refers to the sort of integers.
+
+# <u>Printing all valid models</u>
+Now you might be asking, that `s.model()` gives only 1 model which is valid. But there might be other models which are valid. How do I see them? Don't worry. I also had the same question, and I got you covered.
+```python
+from z3 import *
+
+x,y = Bools('x y')
+s=Solver()
+s.add(Or(x,y))
+while s.check() == sat: 
+	model = s.model()
+	# Print the values of the current model
+	print("Model:", model)
+	# Create constraints to exclude the current model
+	exclude_current_model = Or([v() != model[v] for v in model])
+	# Add the exclusion constraint to the solver
+	s.add(exclude_current_model)  
+
+print("No more models.")
+```
+
+Output:
+```
+Model: [y = False, x = True]
+Model: [y = True]
+No more models.
+```
+
+The 2nd model means that if y is true, x can be anything i.e:- true or false. Hence all 3 models is shown indirectly.
