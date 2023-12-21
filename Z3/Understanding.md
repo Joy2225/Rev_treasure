@@ -16,8 +16,9 @@ print(s.model()) #Print valid values to satisfy the model
 ```
 
 Majorly all the things are explained in the comments. One thing whose exact explanation I was looking for is the **`add`** function. 
-- s.add(constraints) - Basically it gives the solver the constraints
-Now the above code is can be satisfied by some specific values of x, y and z.
+- s.add(constraints) - Basically it gives the solver the constraints.
+
+Now the above code is satisfied by some specific values of x, y and z.
 The output is:-
 ```
 [z = False, y = True, x = False]
