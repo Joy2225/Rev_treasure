@@ -200,7 +200,68 @@ Flag: {F1v3!}
 
 **Challenge 6**
 
-We first check the `submitFlag` function in the 
+We first check the `submitFlag` function in the `FlagSixLoginActivity` 
+```java
+ public final void submitFlag(View view) {
+        EditText editText = (EditText) findViewById(R.id.editText3);
+        d.s.d.g.d(editText, "editText3");
+        if (d.s.d.g.a(editText.getText().toString(), k.a("k3FElEG9lnoWbOateGhj5pX6QsXRNJKh///8Jxi8KXW7iDpk2xRxhQ=="))) { 
+            Intent intent = new Intent(this, FlagOneSuccess.class);
+            FlagsOverview.G = true;
+            new j().b(this, "flagSixButtonColor", true);
+            startActivity(intent);
+        }
+  }
+```
+We see that `k3FElEG9lnoWbOateGhj5pX6QsXRNJKh///8Jxi8KXW7iDpk2xRxhQ==` is being passes to function `a` of class `k`. 
+
+We can click and see what the function does 
+```java
+ public static String a(String str) {
+        if (c(str)) {
+            try {
+                SecretKey generateSecret = SecretKeyFactory.getInstance("DES").generateSecret(new DESKeySpec(f1472a));
+                byte[] decode = Base64.decode(str, 0);
+                Cipher cipher = Cipher.getInstance("DES");
+                cipher.init(2, generateSecret);
+                return new String(cipher.doFinal(decode));
+            } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Not a string!");
+        }
+        return str;
+    }
+```
+It takes a value from some other java file and does some decryption on the string provided.
+
+Now you can write a custom java program to pass the string to this function and output the value. But this can be done if the function is this small and simple. A better way to do this to write a `frida script` for this.
+
+You can see the full js script in [lvl_6.js](https://github.com/Joy2225/Rev_treasure/blob/main/Android/Injured_android/lvl_6.js) 
+```js
+Java.perform(function(){
+    let a=Java.use("b3nac.injuredandroid.k"); // Class name k inside the package 
+    var flag=a.a("k3FElEG9lnoWbOateGhj5pX6QsXRNJKh///8Jxi8KXW7iDpk2xRxhQ=="); //Calling the function a inside the class represented by a and storing and printing the flag
+    console.log(flag);
+})
+```
+First we are storing the class name inside package `b3nac.injuredandroid.k` and referring it to as `a`. Then we call the function `a` inside the class and pass the encoded string `k3FElEG9lnoWbOateGhj5pX6QsXRNJKh///8Jxi8KXW7iDpk2xRxhQ==` and store the result in `flag` and print the `flag`.
+
+**Running the Frida script**
+Firstly, run the `Frida-server`. If you don't know how to run it check out [Frida setup](https://github.com/Joy2225/Rev_treasure/blob/main/Android/Setup%20Frida.md)
+Now open another terminal and go to the directory where you have the `js file` and type the following command:
+```
+frida -U -f b3nac.injuredandroid -l lvl_6.js
+```
+
+`b3nac.injuredandroid` is the package name and `lvl_6.js` is the `js script`
+We get the output something like this
+
+![[flag 6.png]]
+We get out flag.
+Flag: `{This_Isn't_Where_I_Parked_My_Car}`
+
 
 **Challenge 7**
 
