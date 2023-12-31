@@ -4,12 +4,12 @@ First decompile the apk file using jadx-gui. Inside decompile all the classes un
 **Challenge 1**
 
 Inside AndroidManifest.xml search for `FlagOneLoginActivity` as it is the activity that will be launched when you open the challenge.
-![[image.png]]
+![[./Images/image.png]]
 
 Double click on that activity name and it will take you to the java code of `FlagOneLoginActivity`
 
 You can observe this part where the hints have been written, which you can see on pressing the emergency looking button in the app.
-![[image1.png]]
+![[./Images/image1.png]]
 
 Now we check the `submitFlag` function
 ```java
@@ -55,7 +55,7 @@ It will give an output on the terminal as:
 `Starting: Intent { cmp=b3nac.injuredandroid/.b25lActivity }`
 
 Now on checking the injuredandroid app we find the flag on the screen. Hence an activity was launched from outside the app.
-![[image 3.png]]
+![[./Images/image 3.png]]
 
 Flag: `S3c0nd_F1ag`
 
@@ -195,7 +195,7 @@ public final class FlagFiveReceiver extends BroadcastReceiver {
 }
 ```
 On analyzing this code it can be concluded that by clicking on the challenge 3 times, the decoded flag will be displayed on the screen.
-![[Flag 5.png]]
+![[./Images/Flag 5.png]]
 Flag: {F1v3!}
 
 **Challenge 6**
@@ -257,8 +257,8 @@ frida -U -f b3nac.injuredandroid -l lvl_6.js
 
 `b3nac.injuredandroid` is the package name and `lvl_6.js` is the `js script`
 We get the output something like this
+![[./Images/flag 6.png]]
 
-![[flag 6.png]]
 We get out flag.
 Flag: `{This_Isn't_Where_I_Parked_My_Car}`
 
