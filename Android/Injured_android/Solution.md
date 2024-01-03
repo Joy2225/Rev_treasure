@@ -4,7 +4,7 @@ First decompile the apk file using jadx-gui. Inside decompile all the classes un
 **Challenge 1**
 
 Inside AndroidManifest.xml search for `FlagOneLoginActivity` as it is the activity that will be launched when you open the challenge.
-[![](./Images/image.png)]
+![](./Images/image.png)
 
 Double click on that activity name and it will take you to the java code of `FlagOneLoginActivity`
 
