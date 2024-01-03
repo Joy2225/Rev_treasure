@@ -257,7 +257,7 @@ frida -U -f b3nac.injuredandroid -l lvl_6.js
 
 `b3nac.injuredandroid` is the package name and `lvl_6.js` is the `js script`
 We get the output something like this
-[!()[./Images/flag 6.png]]
+[!(flag 6)[./Images/flag 6.png]]
 
 We get out flag.
 Flag: `{This_Isn't_Where_I_Parked_My_Car}`
