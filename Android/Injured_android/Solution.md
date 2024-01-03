@@ -55,7 +55,7 @@ It will give an output on the terminal as:
 `Starting: Intent { cmp=b3nac.injuredandroid/.b25lActivity }`
 
 Now on checking the injuredandroid app we find the flag on the screen. Hence an activity was launched from outside the app.
-![](./Images/image 3.png)
+![](./Images/image_3.png)
 
 Flag: `S3c0nd_F1ag`
 
@@ -195,7 +195,7 @@ public final class FlagFiveReceiver extends BroadcastReceiver {
 }
 ```
 On analyzing this code it can be concluded that by clicking on the challenge 3 times, the decoded flag will be displayed on the screen.
-![](./Images/Flag 5.png)
+![](./Images/Flag_5.png)
 Flag: {F1v3!}
 
 **Challenge 6**
@@ -257,7 +257,7 @@ frida -U -f b3nac.injuredandroid -l lvl_6.js
 
 `b3nac.injuredandroid` is the package name and `lvl_6.js` is the `js script`
 We get the output something like this
-![flag 6](./Images/flag 6.png)
+![flag 6](./Images/flag_6.png)
 
 We get out flag.
 Flag: `{This_Isn't_Where_I_Parked_My_Car}`
