@@ -7,22 +7,14 @@ Java.perform(function(){
     };
 
     c["b"].implementation = function () {
-        console.log(`c.a is called`);
+        console.log(`c.b is called`);
         let result=false;
         return result;
     };
 
     c["c"].implementation = function () {
-        console.log(`c.a is called`);
+        console.log(`c.c is called`);
         let result=false;
-        return result;
-    };
-
-    let a = Java.use("sg.vantagepoint.uncrackable1.a");
-        a["a"].implementation = function (str) {
-        console.log(`a.a is called: str=${str}`);
-        let result = this["a"](str);
-        console.log(`a.a result=${result}`);
         return result;
     };
 
